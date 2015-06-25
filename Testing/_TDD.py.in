@@ -1,0 +1,38 @@
+import sys
+import os
+import unittest
+
+def import_module(path, recursive=False):
+    sys.path.append(path)
+    if recursive:
+        directory = os.listdir(path)
+        for filename in directory: 
+            f = path+os.sep+filename
+            if os.path.isdir(f):
+                import_module(f,recursive)
+
+def clean_pyc(path):
+    directory = os.listdir(path)
+    for filename in directory: 
+        f = path+os.sep+filename
+        if filename[-3:] == 'pyc':
+            os.remove(f)
+        elif os.path.isdir(f):
+            clean_pyc(f)
+
+import_module('${BTKPython_BINARY_DIR}/Testing') # _TDDConfigure.py
+import_module('${BTKPython_SOURCE_DIR}/Testing', True) # All of the unit tests
+
+import _TDDBase
+
+if __name__ == '__main__':
+    out = True
+    result = unittest.TextTestRunner().run(_TDDBase.suite())
+    out &= result.wasSuccessful()
+    # result = unittest.TextTestRunner().run(_TDDIO.suite())
+    # out &= result.wasSuccessful()
+    clean_pyc('${BTKPython_SOURCE_DIR}/Testing')
+    if out:
+        sys.exit(0)
+    else:
+        sys.exit(1)

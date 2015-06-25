@@ -1,0 +1,2 @@
+TDD_FilePathIN = '${BTK_TESTING_DATA_PATH}/Input/'
+TDD_FilePathOUT = '${BTK_BINARY_DIR}/Testing/Data/Output/'
