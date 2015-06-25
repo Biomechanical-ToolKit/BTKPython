@@ -19,6 +19,7 @@ INCLUDE_DIRECTORIES(
 SET(btkPythonBinding_SRCS
   btkPythonBinding.cpp
   # btkBase
+  btkBase/btk_python_init_btkBase.cpp
   btkBase/btkNode_pyq.cpp
   # btkIO
   btkIO/btk_python_init_btkIO.cpp

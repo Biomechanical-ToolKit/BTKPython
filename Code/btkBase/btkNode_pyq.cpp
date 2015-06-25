@@ -33,11 +33,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <PythonQt.h>
-
 #include "btkNode_pyq.h"
 
-void btk_python_init_btkBase()
+PythonQtShell_btkNode::PythonQtShell_btkNode(const QString& name, btkNode* parent)
+: btkNode(name.toStdString(),parent), _wrapper(nullptr)
+{};
+
+PythonQtShell_btkNode::~PythonQtShell_btkNode()
 {
-  PythonQt::priv()->registerCPPClass("btkNode", "", "btkBase", PythonQtCreateObject<PythonQtWrapper_btkNode>, PythonQtSetInstanceWrapperOnShell<PythonQtShell_btkNode>, 0, 0);
+  PythonQtPrivate* priv = PythonQt::priv();
+  if (priv)
+    priv->shellClassDeleted(this);
+};
+
+// -------------------------------------------------------------------------- //
+
+btkNode* PythonQtWrapper_btkNode::new_btkNode(const QString& name, btkNode* parent)
+{
+  return new PythonQtShell_btkNode(name,parent);
+};
+
+void PythonQtWrapper_btkNode::delete_btkNode(btkNode* obj)
+{
+  delete obj;
+};
+
+QString PythonQtWrapper_btkNode::name(btkNode* obj) const
+{
+  return QString::fromStdString(obj->name());
 };
